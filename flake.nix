@@ -1,5 +1,4 @@
 {
-
 # Instructions:
 
 # To build with no intention of hacking the source code, do:
@@ -32,15 +31,15 @@
       program = builtins.toPath (pkgs.writeShellScript "sdkGL" ''
         export NIX_CONFIG="experimental-features = nix-command flakes"
         export PATH=$PATH:${pkgs.nixUnstable}/bin
-        nix run --impure  ${nixGL}#nixGLDefault -- nix run ${self}#x --command "freecad"
+        nix run --impure  ${nixGL}#nixGLDefault -- nix shell --impure ${self}#x --command "freecad"
       '');
     };
     x = (pkgs.freecad.overrideAttrs (old: {
       #cmakeFlags = old.cmakeFlags ++ [ "-DCMAKE_BUILD_TYPE=Debug" ];
       version = "freecad-flake";
       src = pkgs.fetchFromGitHub { owner = "goatchurchprime"; repo = "FreeCAD";
-                rev = "81cc056e041bdf7381834fbd26ec0c9c55de39c7";
-                hash = "sha256-uyCH9O0BW3kwzDJdFrm4UM9G21OV01YU14Ecabithu8="; };
+                rev = "103ed6a5fd6d2725475d9ad88b9f232b6cb7d7cb";
+                hash = "sha256-4E8BsSmyECXFde+HYg7YLvhDqSUuVDQeDIdURj/Hpz0="; };
       buildInputs = old.buildInputs ++ [ pkgs.fmt ];
     })).override {
 #      stdenv = pkgs.ccacheStdenv;
