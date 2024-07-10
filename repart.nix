@@ -6,6 +6,7 @@ in
   boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "sd_mod" "uas" ];
   imports = [ "${modulesPath}/image/repart.nix" ];
   fileSystems."/".device = "/dev/disk/by-label/nixos";
+  fileSystems."/boot".device = "/dev/disk/by-label/ESP";
   systemd.repart = {
     enable = true;
     partitions = {
