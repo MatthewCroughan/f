@@ -65,4 +65,8 @@
 
   hardware.enableAllFirmware = true;
 
+  time.timeZone = "Europe/London";
+
+  system.stateVersion = "24.05";
+
 }
