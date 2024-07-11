@@ -11,6 +11,7 @@ in
     enable = true;
     partitions = {
       "10-root" = { Type = "root"; };
+      "20-esp" = { Type = "esp"; };
     };
   };
   image.repart = {
@@ -22,13 +23,23 @@ in
           "/EFI/BOOT/BOOT${lib.toUpper efiArch}.EFI".source =
             "${pkgs.systemd}/lib/systemd/boot/efi/systemd-boot${efiArch}.efi";
 
-          "/EFI/Linux/${config.system.boot.loader.ukiFile}".source =
-            "${config.system.build.uki}/${config.system.boot.loader.ukiFile}";
+          "/loader/entries/nixos.conf".source = pkgs.writeText "nixos.conf" ''
+            title NixOS
+            linux /EFI/nixos/kernel.efi
+            initrd /EFI/nixos/initrd.efi
+            options init=${config.system.build.toplevel}/init ${toString config.boot.kernelParams}
+          '';
+
+          "/EFI/nixos/kernel.efi".source =
+            "${config.boot.kernelPackages.kernel}/${config.system.boot.loader.kernelFile}";
+
+          "/EFI/nixos/initrd.efi".source =
+            "${config.system.build.initialRamdisk}/${config.system.boot.loader.initrdFile}";
         };
         repartConfig = {
           Type = "esp";
           Format = "vfat";
-          SizeMinBytes = "96M";
+          SizeMinBytes = "500M";
         };
       };
       "root" = {
