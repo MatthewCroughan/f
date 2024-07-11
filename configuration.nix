@@ -12,7 +12,6 @@
 
   environment.systemPackages = with pkgs; [
     firefox
-    mosquitto
     python3
     vim
     git

@@ -4,14 +4,16 @@ let
 in
 {
   boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "sd_mod" "uas" ];
+#  boot.initrd.systemd.enable = true;
+#  boot.initrd.systemd.repart.enable = true;
   imports = [ "${modulesPath}/image/repart.nix" ];
   fileSystems."/".device = "/dev/disk/by-label/nixos";
   boot.loader.efi.efiSysMountPoint = "/efi";
   systemd.repart = {
     enable = true;
     partitions = {
-      "10-root" = { Type = "root"; };
-      "20-esp" = { Type = "esp"; };
+      "10-esp" = { Type = "esp"; };
+      "20-root" = { Type = "root"; };
     };
   };
   image.repart = {
